@@ -339,7 +339,7 @@ footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;font
     <tr><td>SJF</td><td>11,7 %</td><td>31</td><td>8</td><td>0,81 s</td><td>6,9 s</td></tr>
     <tr><td><b>Modelo liviano</b></td><td><b>7,8 %</b></td><td><b>14</b></td><td>12</td><td>1,05 s</td><td>20,0 s</td></tr>
   </table></div>
-  <figure><img src="img/mc_fallas.png" alt="Tareas fuera de plazo por política" loading="lazy" /><figcaption>Izquierda: escenario base (334 tareas). Derecha: 30 escenarios nuevos con los que el modelo no se entrenó.</figcaption></figure>
+  <figure><img src="mc_fallas.png" alt="Tareas fuera de plazo por política" loading="lazy" /><figcaption>Izquierda: escenario base (334 tareas). Derecha: 30 escenarios nuevos con los que el modelo no se entrenó.</figcaption></figure>
   <div class="nota"><b>¿Se sostiene con otros datos?</b> En 30 escenarios nuevos el modelo dejó en promedio 7,1 % de tareas fuera de plazo, contra 9,0 % de SJF y 16,8 % de FCFS, y le ganó a SJF en 27 de los 30. Cada predicción tarda unos 1,5 µs, nada frente a tiempos de servicio de decenas de milisegundos.</div>
 
   <h3>Simúlalo tú</h3>
@@ -622,7 +622,7 @@ $$('#vistaTabs button').forEach(b => b.onclick = () => {
   $$('#vistaTabs button').forEach(x => x.classList.toggle('on', x === b)); const v = b.dataset.v;
   $('#vistaInt').style.display = v === 'int' ? '' : 'none'; $('#vistaImg').style.display = v === 'int' ? 'none' : '';
   const cap = {mapa:'Mapa completo en VOSviewer (Network Visualization): 149 términos, 5 clústeres, 5.062 enlaces.', overlay:'Vista Overlay: el color indica el año promedio de publicación; amarillo es lo más reciente.', density:'Vista de densidad: las zonas más brillantes concentran más ocurrencias.'};
-  if (v !== 'int') { $('#vistaImgSrc').src = `img/${v}.jpg`; $('#vistaImgSrc').alt = cap[v]; $('#vistaCap').textContent = cap[v]; }
+  if (v !== 'int') { $('#vistaImgSrc').src = `${v}.jpg`; $('#vistaImgSrc').alt = cap[v]; $('#vistaCap').textContent = cap[v]; }
 });
 
 /* ---------- clústeres y palabras ---------- */
@@ -630,7 +630,7 @@ let cluAct = 2;
 function cluSel(c){
   cluAct = c; $$('#cluTabs button').forEach(b => b.classList.toggle('on', +b.dataset.c === c));
   const k = D.clus[c], n = Object.values(T).filter(t => t.c === c).length, ws = D.words.filter(w => w.c === c);
-  $('#cluBody').innerHTML = `<figure style="margin:8px 0"><img src="img/cluster${c}.jpg" alt="Clúster ${c}" loading="lazy" /><figcaption>Clúster ${c} (${CN[c].toLowerCase()}): ${n} términos.</figcaption></figure>` +
+  $('#cluBody').innerHTML = `<figure style="margin:8px 0"><img src="cluster${c}.jpg" alt="Clúster ${c}" loading="lazy" /><figcaption>Clúster ${c} (${CN[c].toLowerCase()}): ${n} términos.</figcaption></figure>` +
     k.p.map(p => `<p>${p}</p>`).join('') +
     `<p style="font-weight:600;margin-bottom:0">Las cuatro palabras analizadas (toca una):</p><div class="wcards">` +
     ws.map(w => `<button type="button" class="wcard" data-id="${w.id}"><b>${w.l}</b><small>${T[w.id].o} ocurrencias · fuerza ${T[w.id].s}</small></button>`).join('') + '</div>';
