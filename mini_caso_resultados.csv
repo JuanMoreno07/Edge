@@ -1,0 +1,4 @@
+Politica,Throughput(t/s),Latencia_prom(s),Latencia_p99(s),Tasa_falla(%),Utilizacion_CPU(%),Energia_por_tarea(J),Energia_por_tarea_util(J),Fallas_URLLC,Fallas_eMBB
+fcfs,2.7684,1.0322,3.7154,19.76,74.96,28.886,36.000,48,18
+sjf,2.7684,0.8063,6.9071,11.68,74.96,28.886,32.705,31,8
+learned,2.7684,1.0517,19.9711,7.78,74.96,28.886,31.325,14,12

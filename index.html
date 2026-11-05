@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Edge AI en la RAN · BlogDPC</title>
+<meta name="description" content="Qué se investiga sobre inteligencia artificial en el borde de la red de acceso radio: mapa de 813 documentos (2016–2025) con VOSviewer y un experimento de scheduling con un modelo liviano." />
+<meta name="keywords" content="Edge AI, RAN, red de acceso radio, inteligencia artificial en el borde, 6G, MEC, scheduling, URLLC, VOSviewer, bibliometría, UIS" />
+<meta name="author" content="Juan Pablo Moreno Peña, Juan David Ruiz Higuera" />
+<meta property="og:title" content="Edge AI en la RAN: la IA se acerca a la antena" />
+<meta property="og:description" content="Mapa de la investigación 2016–2025 y un experimento de scheduling en el borde." />
+<meta property="og:type" content="article" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:#f7f4ee; --ink:#1d2321; --soft:#5d6662; --faint:#8e9692; --line:#e2ddd2; --card:#fffdf9;
+  --teal:#0f6b63; --teal2:#0b524c; --sand:#efe8da; --warn:#b4542d;
+  --c1:#d64541; --c2:#3a9d48; --c3:#3a6fc2; --c4:#d1b12b; --c5:#9659b3;
+}
+[data-theme="dark"]{
+  --paper:#141816; --ink:#e8ece9; --soft:#a7b0ac; --faint:#76807b; --line:#2a312e; --card:#1b201e;
+  --teal:#3fb3a6; --teal2:#5cc8bb; --sand:#222926;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.2;font-weight:700}
+a{color:var(--teal)}
+img{max-width:100%;display:block}
+button{font-family:inherit}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--teal);width:0;z-index:100}
+.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top .in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px}
+.logo{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:19px;color:var(--ink);text-decoration:none}
+.logo span{color:var(--teal)}
+.top .sp{flex:1}
+.tbtn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:14px}
+#menuBtn{display:none}
+
+/* portada */
+.cover{max-width:1240px;margin:0 auto;padding:56px 20px 30px;display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:end}
+.kicker{text-transform:uppercase;letter-spacing:.12em;font-size:12.5px;color:var(--teal);font-weight:600}
+.cover h1{font-size:clamp(34px,5.4vw,60px);margin:10px 0 14px}
+.cover .bajada{font-size:19px;color:var(--soft);max-width:640px}
+.decl{margin:22px 0 0;padding:14px 18px;border-left:3px solid var(--teal);background:var(--sand);font-size:14.5px;font-style:italic;border-radius:0 10px 10px 0;max-width:720px}
+.byline{margin-top:18px;font-size:14px;color:var(--soft)}
+.cifras{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cifra{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.cifra b{display:block;font-family:Fraunces,Georgia,serif;font-size:34px;line-height:1.1;color:var(--teal)}
+.cifra span{font-size:13px;color:var(--soft)}
+
+/* layout */
+.layout{max-width:1240px;margin:0 auto;padding:10px 20px 60px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:44px}
+aside{position:sticky;top:70px;align-self:start;max-height:calc(100vh - 86px);overflow:auto;font-size:14px;padding-bottom:20px}
+aside h4{font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin:18px 0 8px}
+aside ol{list-style:none;padding:0;margin:0;counter-reset:e}
+aside ol li a{display:block;padding:5px 10px;border-left:2px solid var(--line);color:var(--soft);text-decoration:none}
+aside ol li a:hover{color:var(--ink)}
+aside ol li a.on{border-color:var(--teal);color:var(--teal);font-weight:600}
+#buscar{width:100%;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;padding:8px 11px;font-size:14px}
+.tagcloud{display:flex;flex-wrap:wrap;gap:5px}
+.tag{border:1px solid var(--line);background:var(--card);color:var(--soft);border-radius:999px;padding:2px 10px;font-size:12.5px;cursor:pointer}
+.tag.on,.tag:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+#filtroInfo{font-size:13px;color:var(--warn);margin-top:6px}
+
+/* entradas */
+.entrada{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px 38px;margin:0 0 30px}
+.entrada.oculta{display:none}
+.emeta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--faint)}
+.emeta .num{font-family:Fraunces,Georgia,serif;color:var(--teal);font-weight:700;font-size:15px}
+.emeta .t{color:var(--soft);border:1px solid var(--line);border-radius:999px;padding:0 8px;font-size:12px}
+.emeta .tts{margin-left:auto}
+.entrada h2{font-size:clamp(26px,3.4vw,36px);margin:8px 0 6px}
+.entrada .lead{color:var(--soft);font-size:17.5px;margin:0 0 18px}
+.entrada h3{font-size:21px;margin:30px 0 8px}
+.tts{border:1px solid var(--line);background:var(--paper);color:var(--soft);border-radius:999px;padding:3px 11px;font-size:12.5px;cursor:pointer}
+.tts.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nota{background:var(--sand);border-radius:12px;padding:14px 18px;font-size:15px;margin:18px 0}
+.nota b{color:var(--teal)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.box{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--paper)}
+.box h4{margin:0 0 6px;font-size:15px}
+figure{margin:20px 0}
+figure img{border:1px solid var(--line);border-radius:12px;background:#fff}
+figcaption{font-size:13px;color:var(--faint);margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:12px 0}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--soft);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.tw{overflow-x:auto}
+code,.mono{font-family:ui-monospace,Consolas,monospace;font-size:13.5px}
+.cadena{position:relative;background:#14201d;color:#d6efe9;border-radius:12px;padding:16px 18px;font-family:ui-monospace,Consolas,monospace;font-size:13.5px;overflow-x:auto}
+.cadena button{position:absolute;top:8px;right:8px;font-size:12px;background:#24423c;color:#d6efe9;border:none;border-radius:6px;padding:4px 9px;cursor:pointer}
+dfn{font-style:normal;border-bottom:1.5px dotted var(--teal);cursor:help}
+#pop{position:absolute;z-index:80;max-width:280px;background:var(--ink);color:var(--paper);font-size:13.5px;line-height:1.45;padding:10px 12px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);display:none}
+#pop b{display:block;margin-bottom:2px}
+.slider{display:grid;grid-template-columns:150px 1fr 80px;gap:10px;align-items:center;font-size:14px;margin:8px 0}
+.slider input{width:100%;accent-color:var(--teal)}
+.barra{display:grid;grid-template-columns:150px 1fr 90px;gap:10px;align-items:center;font-size:14px;margin:7px 0}
+.barra .tr{height:14px;background:var(--sand);border-radius:7px;overflow:hidden}
+.barra .fi{height:100%;border-radius:7px;background:var(--teal);transition:width .4s}
+.embudo .fila{display:flex;align-items:center;gap:12px;margin:8px 0}
+.embudo .bl{height:38px;border-radius:8px;background:var(--teal);color:#fff;display:flex;align-items:center;padding:0 14px;font-weight:600;white-space:nowrap;min-width:fit-content}
+.embudo .tx{font-size:14px;color:var(--soft)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:13px;background:var(--paper)}
+.chip.sel{cursor:pointer}
+.chip.sel.on{background:var(--ink);color:var(--paper)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+.tabs button{border:1px solid var(--line);background:var(--paper);color:var(--soft);padding:7px 14px;border-radius:9px;cursor:pointer;font-size:14px}
+.tabs button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+#red{width:100%;height:auto;background:var(--paper);border:1px solid var(--line);border-radius:14px;touch-action:manipulation}
+.redwrap{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:16px}
+#redPanel{font-size:14px}
+.lk{display:grid;grid-template-columns:1fr 60px 34px;gap:8px;align-items:center;padding:4px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+.lk i{display:block;height:7px;border-radius:4px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.wcards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.wcard{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--paper);cursor:pointer;text-align:left;color:var(--ink)}
+.wcard:hover,.wcard.on{border-color:var(--teal);box-shadow:0 0 0 2px color-mix(in srgb,var(--teal) 25%,transparent)}
+.wcard b{display:block;font-size:15px}
+.wcard small{color:var(--faint)}
+#ficha{border-top:1px solid var(--line);margin-top:10px;padding-top:6px}
+.fichagrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+#trend{width:100%;height:auto}
+.hip{border-left:4px solid var(--teal);padding:10px 14px;background:var(--paper);border-radius:0 10px 10px 0;margin:8px 0;font-size:15px}
+.btn{background:var(--teal);color:#fff;border:none;border-radius:9px;padding:10px 18px;font-weight:600;cursor:pointer;font-size:14.5px}
+.btn:hover{background:var(--teal2)}
+.btn.sec{background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+.quiz .q{margin:18px 0 6px;font-weight:600}
+.quiz label{display:block;border:1px solid var(--line);border-radius:9px;padding:7px 12px;margin:5px 0;cursor:pointer;font-size:15px;background:var(--paper)}
+.quiz label.ok{border-color:#2e8b57;background:color-mix(in srgb,#2e8b57 14%,var(--paper))}
+.quiz label.no{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,var(--paper))}
+.quiz .ex{font-size:13.5px;color:var(--soft);margin:4px 0 0}
+.persona{display:flex;gap:14px;align-items:center}
+.ini{width:52px;height:52px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:Fraunces,Georgia,serif;font-size:20px;flex:none}
+.video{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#111;margin:14px 0}
+.video>*{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video .vacio{display:flex;align-items:center;justify-content:center;color:#bbb;font-size:15px}
+.refs li{margin:8px 0;font-size:14.5px;color:var(--soft)}
+input[type=text],textarea{width:100%;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:9px;padding:9px 12px;font:inherit;font-size:15px}
+.estrellas button{background:none;border:none;font-size:24px;cursor:pointer;color:var(--line);padding:0 2px}
+.estrellas button.on{color:#e0a52b}
+.coment{border-top:1px solid var(--line);padding:10px 0;font-size:15px}
+.coment small{color:var(--faint)}
+.share{display:flex;flex-wrap:wrap;gap:8px}
+.share a,.share button{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:9px;padding:7px 13px;font-size:14px;text-decoration:none;cursor:pointer}
+.share a:hover,.share button:hover{border-color:var(--teal);color:var(--teal)}
+.poll label{display:block;border:1px solid var(--line);border-radius:9px;padding:7px 12px;margin:5px 0;cursor:pointer;background:var(--paper);font-size:15px}
+.poll i{display:block;height:6px;background:var(--teal);border-radius:3px;margin-top:4px}
+footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;font-size:13.5px;color:var(--faint)}
+/* chatbot */
+#botBtn{position:fixed;right:18px;bottom:18px;z-index:70;background:var(--ink);color:var(--paper);border:none;border-radius:999px;padding:12px 18px;font-weight:600;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#bot{position:fixed;right:18px;bottom:72px;z-index:70;width:340px;max-width:calc(100vw - 36px);height:440px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.25);display:none;flex-direction:column;overflow:hidden}
+#bot.open{display:flex}
+#bot header{background:var(--teal);color:#fff;padding:12px 16px;font-weight:600}
+#botLog{flex:1;overflow-y:auto;padding:12px;font-size:14px}
+.m{max-width:86%;padding:8px 12px;border-radius:12px;margin:6px 0}
+.m.b{background:var(--sand)}
+.m.u{background:var(--teal);color:#fff;margin-left:auto}
+.sug{display:flex;flex-wrap:wrap;gap:5px;padding:0 12px 8px}
+.sug button{font-size:12px;border:1px solid var(--line);background:var(--paper);color:var(--soft);border-radius:999px;padding:3px 9px;cursor:pointer}
+#bot form{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
+@media(max-width:980px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  aside{position:fixed;inset:57px 0 auto 0;max-height:70vh;background:var(--card);border-bottom:1px solid var(--line);padding:6px 20px 16px;display:none;z-index:45}
+  aside.open{display:block}
+  #menuBtn{display:inline-block}
+  .cover{grid-template-columns:1fr;padding-top:34px}
+  .redwrap,.fichagrid{grid-template-columns:1fr}
+  .wcards{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .entrada{padding:22px 18px;border-radius:14px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .slider,.barra{grid-template-columns:110px 1fr 64px;font-size:13px}
+  .cover .bajada{font-size:17px}
+  table{font-size:13.5px}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="top"><div class="in">
+  <button class="tbtn" id="menuBtn" aria-label="Abrir índice">☰</button>
+  <a class="logo" href="#">Edge<span>AI</span>·RAN</a>
+  <div class="sp"></div>
+  <button class="tbtn" id="temaBtn" title="Cambiar tema">◑ Tema</button>
+</div></div>
+
+<header class="cover">
+  <div>
+    <div class="kicker">BlogDPC · Divulgación pública de la ciencia</div>
+    <h1>La inteligencia artificial se acerca a la antena</h1>
+    <p class="bajada">Qué se está investigando sobre <dfn data-g="edge">Edge AI</dfn> en la <dfn data-g="ran">red de acceso radio</dfn>, contado a partir de 813 publicaciones científicas, y un experimento propio para ver si un modelo pequeño puede organizar mejor el trabajo de un servidor de borde.</p>
+    <p class="decl">“La presente Divulgación Pública de la Ciencia, a través del siguiente Desarrollo Web, tiene una ruta de circulación nacional sin enfoque diferencial y está dirigido a la comunidad o público objetivo conformado por jóvenes, adultos, empresarios y/o empresa en género literario informativo de tipo Blog, con componente digital a través de soporte web”.</p>
+    <p class="byline">Por Juan Pablo Moreno Peña y Juan David Ruiz Higuera · Grupo 6 · Comunicaciones II (27145), Universidad Industrial de Santander · Profesor Ronald Zamora Musa · Noviembre de 2026</p>
+  </div>
+  <div class="cifras">
+    <div class="cifra"><b>813</b><span>documentos de Scopus, 2016–2025</span></div>
+    <div class="cifra"><b>149</b><span>términos en el mapa final</span></div>
+    <div class="cifra"><b>5</b><span>líneas de investigación</span></div>
+    <div class="cifra"><b>−60 %</b><span>tareas fuera de plazo con el modelo liviano frente a FCFS</span></div>
+  </div>
+</header>
+
+<div class="layout">
+<aside id="side">
+  <h4>Buscar en el blog</h4>
+  <input id="buscar" type="search" placeholder="Ej.: 6G, scheduling, URLLC…" />
+  <div id="filtroInfo"></div>
+  <h4>Entradas</h4>
+  <ol id="toc"></ol>
+  <h4>Etiquetas</h4>
+  <div class="tagcloud" id="tags"></div>
+  <h4>Compartir</h4>
+  <div class="share" id="shareSide"></div>
+</aside>
+
+<main>
+
+<!-- 1 -->
+<article class="entrada" id="e1" data-tags="Conceptos,Edge AI,RAN,6G">
+  <h2>¿Por qué llevar la IA al borde de la red?</h2>
+  <p class="lead">Cuando el celular necesita una respuesta en milisegundos, ir hasta la nube y volver ya es demasiado lejos.</p>
+  <p>Hoy casi toda la inteligencia artificial que usamos (reconocer voz, detectar objetos en una imagen, recomendar contenido) corre en centros de datos que pueden estar a cientos o miles de kilómetros. Para la mayoría de las aplicaciones eso no importa. Pero hay casos, como un carro autónomo que frena, un robot industrial o una cirugía remota, donde la respuesta tiene que llegar en pocos milisegundos y sin falla. Ese tipo de tráfico se llama <dfn data-g="urllc">URLLC</dfn>.</p>
+  <p><b>Edge AI</b> propone ejecutar los modelos en servidores ubicados junto a la estación base, en la <dfn data-g="ran">RAN</dfn>, o incluso en el mismo dispositivo. Así se reduce la distancia, se envía menos información a internet y los datos sensibles no salen de la zona. A cambio, esos servidores tienen menos capacidad que la nube, así que hay que decidir con cuidado qué tarea se ejecuta primero: eso es el <dfn data-g="sched">scheduling</dfn>, y es el centro del experimento de la entrada 6.</p>
+
+  <h3>Pruébalo: ¿nube o borde?</h3>
+  <p>Mueve los controles y compara cuánto tarda una respuesta si el modelo está en la nube o en un servidor de borde. El cálculo es aproximado: la señal viaja por fibra a unos 200.000 km/s y cada salto de red agrega algo de retardo.</p>
+  <div class="box">
+    <div class="slider"><span>Distancia a la nube</span><input type="range" id="dNube" min="100" max="5000" step="100" value="1500"><b id="dNubeV"></b></div>
+    <div class="slider"><span>Cómputo del modelo</span><input type="range" id="tComp" min="1" max="50" step="1" value="8"><b id="tCompV"></b></div>
+    <div class="slider"><span>Velocidad del borde</span><input type="range" id="fBorde" min="1" max="4" step="0.5" value="2"><b id="fBordeV"></b></div>
+    <div id="latOut" style="margin-top:12px"></div>
+    <p style="font-size:13px;color:var(--faint);margin:8px 0 0">El borde está a ~10 km pero es más lento que la nube: el control indica cuántas veces más tarda en calcular. La línea de 10 ms es una meta típica para aplicaciones críticas.</p>
+  </div>
+
+  <h3>Mapa conceptual</h3>
+  <p>Así se conectan las cinco líneas de investigación que encontramos. Toca un recuadro para ver de qué trata.</p>
+  <svg id="cmap" viewBox="0 0 860 380" role="img" aria-label="Mapa conceptual"></svg>
+  <div class="nota" id="cmapInfo">Toca un recuadro del mapa.</div>
+</article>
+
+<!-- 2 -->
+<article class="entrada" id="e2" data-tags="Metodología,Scopus,VOSviewer,Datos">
+  <h2>Cómo buscamos y limpiamos la información</h2>
+  <p class="lead">De 813 documentos a un mapa de 149 términos, paso a paso.</p>
+  <p>Usamos <b>Scopus</b>, una base de datos que solo indexa revistas y congresos con revisión por pares, y <b>VOSviewer</b> [3], un programa gratuito que lee títulos y resúmenes, extrae los términos y dibuja qué tan seguido aparecen juntos.</p>
+  <h3>La búsqueda</h3>
+  <div class="cadena" id="cadena">TITLE-ABS-KEY ( "edge AI" OR "on-device AI" ) AND PUBYEAR &gt; 2015 AND PUBYEAR &lt; 2026 AND ( LIMIT-TO ( DOCTYPE , "ar" ) OR LIMIT-TO ( DOCTYPE , "cp" ) )<button type="button" id="copiar">Copiar</button></div>
+  <div class="grid3" style="margin-top:14px">
+    <div class="box"><h4>Periodo</h4>2016–2025, la ventana que recomienda la guía del curso.</div>
+    <div class="box"><h4>Tipo</h4>Artículos y ponencias. Se dejan por fuera reviews, capítulos y editoriales.</div>
+    <div class="box"><h4>Campos</h4>Título, resumen y palabras clave, que son los que lee VOSviewer.</div>
+  </div>
+  <figure><svg id="anios" viewBox="0 0 640 220" role="img" aria-label="Documentos por año"></svg>
+  <figcaption>Documentos por año. 2025 concentra el 45 % del total; entre 2017 y 2018 no aparece ninguno.</figcaption></figure>
+
+  <h3>Del texto al mapa</h3>
+  <div class="embudo" id="embudo"></div>
+  <div class="grid2">
+    <div>
+      <h4 style="margin:14px 0 4px">Unimos sinónimos</h4>
+      <p style="font-size:15px">El primer mapa tenía el mismo concepto repetido con nombres distintos. Con un <dfn data-g="tes">tesauro</dfn> unimos 28 variantes en 15 términos:</p>
+      <div id="tesauro" class="chips"></div>
+    </div>
+    <div>
+      <h4 style="margin:14px 0 4px">Quitamos el relleno</h4>
+      <p style="font-size:15px">De los 281 términos que eligió VOSviewer quitamos 132 que no dicen nada técnico. Elige un criterio para verlos:</p>
+      <div class="chips" id="critBtns"></div>
+      <div class="chips" id="elimList" style="max-height:170px;overflow:auto"></div>
+    </div>
+  </div>
+</article>
+
+<!-- 3 -->
+<article class="entrada" id="e3" data-tags="VOSviewer,Datos interactivos,Clústeres">
+  <h2>El mapa de la investigación</h2>
+  <p class="lead">Cada punto es un término; su tamaño indica cuántas veces aparece y el color, a qué línea de investigación pertenece.</p>
+  <div class="tabs" id="vistaTabs">
+    <button class="on" data-v="int">Mapa interactivo</button>
+    <button data-v="mapa">Captura de VOSviewer</button>
+    <button data-v="overlay">Por año (Overlay)</button>
+    <button data-v="density">Densidad</button>
+  </div>
+  <div id="vistaInt">
+    <div class="chips" id="redFiltro"></div>
+    <input type="text" id="redBuscar" placeholder="Busca un término del mapa (ej.: urllc, transformer, ran)" style="margin:6px 0 10px" />
+    <div class="redwrap">
+      <svg id="red" viewBox="0 0 900 600" role="img" aria-label="Mapa de co-ocurrencia"></svg>
+      <div id="redPanel" class="box"><b>Toca un punto</b><p style="color:var(--soft);font-size:14px">Verás sus diez conexiones más fuertes. La fuerza de asociación es el número de documentos en que dos términos aparecen juntos.</p></div>
+    </div>
+  </div>
+  <figure id="vistaImg" style="display:none"><img id="vistaImgSrc" alt="" loading="lazy" /><figcaption id="vistaCap"></figcaption></figure>
+</article>
+
+<!-- 4 -->
+<article class="entrada" id="e4" data-tags="Clústeres,Análisis,VOSviewer">
+  <h2>Cinco líneas de investigación, veinte palabras</h2>
+  <p class="lead">Con la regla ZamoraCluster (5 clústeres → 4 palabras por clúster × 10 enlaces) analizamos 200 relaciones. En cada clúster tomamos las cuatro palabras con mayor fuerza total.</p>
+  <div class="tabs" id="cluTabs"></div>
+  <div id="cluBody"></div>
+  <div id="ficha"></div>
+</article>
+
+<!-- 5 -->
+<article class="entrada" id="e5" data-tags="Tendencias,6G,LLM,Datos interactivos">
+  <h2>Lo que viene: tendencias 2019–2025</h2>
+  <p class="lead">Porcentaje de documentos de cada año que mencionan un término en el título o el resumen. Activa o desactiva términos para compararlos.</p>
+  <div class="chips" id="trendChips"></div>
+  <svg id="trend" viewBox="0 0 700 300" role="img" aria-label="Evolución de términos"></svg>
+  <div class="grid2" style="margin-top:12px">
+    <div class="box"><h4>Lo más reciente</h4><p style="font-size:14px;color:var(--soft);margin:0 0 6px">Términos con el año promedio de publicación más alto.</p><div id="emerg" class="chips"></div></div>
+    <div class="box"><h4>Lo más establecido</h4><p style="font-size:14px;color:var(--soft);margin:0 0 6px">Términos con el año promedio más antiguo.</p><div id="consol" class="chips"></div></div>
+  </div>
+  <div class="nota"><b>El vacío que encontramos.</b> Los agentes pasan de 3 % de los documentos en 2021 a 10 % en 2025, y los LLM aparecen con fuerza. Pero la mención directa de la red de acceso radio se queda entre 3 % y 6 %: la mayoría de los trabajos optimiza el cómputo en el borde en general y pocos llegan hasta la RAN. De ahí sale nuestro experimento.</div>
+</article>
+
+<!-- 6 -->
+<article class="entrada" id="e6" data-tags="Mini-caso,Scheduling,URLLC,Python,Datos interactivos">
+  <h2>Experimento: ¿un modelo pequeño organiza mejor la fila?</h2>
+  <p class="lead">Un servidor de borde recibe tareas de inferencia de dos tipos y tiene que decidir cuál atiende primero.</p>
+  <p>Simulamos en Python un servidor de borde de 10 GFLOP/s que recibe 3 tareas por segundo. El 30 % son <b>URLLC</b>, con plazos de 0,1 a 1 s, y el resto <dfn data-g="embb">eMBB</dfn>, con plazos de 1 a 5 s. Comparamos tres formas de ordenar la fila:</p>
+  <div class="grid3">
+    <div class="box"><h4>FCFS</h4>El primero que llega es el primero que se atiende.</div>
+    <div class="box"><h4>SJF</h4>Primero la tarea más corta.</div>
+    <div class="box"><h4>Modelo liviano</h4>Una <dfn data-g="logreg">regresión logística</dfn> estima qué tarea tiene más riesgo de no cumplir su plazo y la atiende primero.</div>
+  </div>
+  <h3>Lo que esperábamos</h3>
+  <div class="hip"><b>H1.</b> El modelo reduce las tareas que terminan fuera de plazo. <b>Se cumple.</b></div>
+  <div class="hip"><b>H2.</b> Protege el tráfico crítico URLLC. <b>Se cumple:</b> sus fallas bajan de 48 a 14.</div>
+  <div class="hip"><b>H3.</b> Tiene un costo: algunas tareas eMBB esperan mucho más. <b>Se cumple:</b> la latencia p99 sube.</div>
+  <h3>Resultados</h3>
+  <div class="tw"><table>
+    <tr><th>Política</th><th>Fuera de plazo</th><th>Fallas URLLC</th><th>Fallas eMBB</th><th>Lat. promedio</th><th>Lat. p99</th></tr>
+    <tr><td>FCFS</td><td>19,8 %</td><td>48 de 106</td><td>18 de 228</td><td>1,03 s</td><td>3,7 s</td></tr>
+    <tr><td>SJF</td><td>11,7 %</td><td>31</td><td>8</td><td>0,81 s</td><td>6,9 s</td></tr>
+    <tr><td><b>Modelo liviano</b></td><td><b>7,8 %</b></td><td><b>14</b></td><td>12</td><td>1,05 s</td><td>20,0 s</td></tr>
+  </table></div>
+  <figure><img src="img/mc_fallas.png" alt="Tareas fuera de plazo por política" loading="lazy" /><figcaption>Izquierda: escenario base (334 tareas). Derecha: 30 escenarios nuevos con los que el modelo no se entrenó.</figcaption></figure>
+  <div class="nota"><b>¿Se sostiene con otros datos?</b> En 30 escenarios nuevos el modelo dejó en promedio 7,1 % de tareas fuera de plazo, contra 9,0 % de SJF y 16,8 % de FCFS, y le ganó a SJF en 27 de los 30. Cada predicción tarda unos 1,5 µs, nada frente a tiempos de servicio de decenas de milisegundos.</div>
+
+  <h3>Simúlalo tú</h3>
+  <p>Este simulador usa el mismo modelo entrenado en Python. Cambia la carga y la proporción de tráfico crítico y mira qué pasa.</p>
+  <div class="box">
+    <div class="slider"><span>Tareas por segundo</span><input type="range" id="sLam" min="1.5" max="4" step="0.1" value="3"><b id="sLamV"></b></div>
+    <div class="slider"><span>% URLLC</span><input type="range" id="sUr" min="10" max="60" step="5" value="30"><b id="sUrV"></b></div>
+    <button class="btn" id="sRun" type="button">Simular de nuevo</button>
+    <div id="sOut" style="margin-top:12px"></div>
+  </div>
+
+  <h3>Decisión de ingeniería</h3>
+  <p>Si solo miráramos la latencia promedio, ganaría SJF. Pero cuando hay tráfico crítico lo que importa es cumplir los plazos, y ahí el modelo liviano es mejor con un costo de cómputo casi nulo. Lo usaríamos, agregando un tiempo máximo de espera para las tareas eMBB, para que no se queden al final de la fila indefinidamente.</p>
+  <p style="font-size:14px;color:var(--faint)">Supuestos: un solo servidor que no interrumpe tareas y sin modelar el canal de radio. <a href="mini_caso_scheduling_edge_ai.py" download>Descargar el código (Python)</a> · <a href="mini_caso_resultados.csv" download>Descargar resultados (CSV)</a></p>
+</article>
+
+<!-- 7 -->
+<article class="entrada" id="e7" data-tags="Aprendizaje,Conclusiones,Interactivo">
+  <h2>Qué aprendimos</h2>
+  <p class="lead">Del proceso, más que del tema.</p>
+  <div class="grid2">
+    <div>
+      <h3 style="margin-top:6px">Conclusiones</h3>
+      <ul>
+        <li>La investigación en Edge AI despegó desde 2019; solo 2025 reúne casi la mitad de los documentos.</li>
+        <li><code>task</code> y <code>scheduling</code> son los términos con más peso del mapa y su enlace (54) es el más fuerte de los 200 analizados.</li>
+        <li>Lo más nuevo: LLM y agentes en el borde, decisiones en tiempo real y sostenibilidad.</li>
+        <li>La IA dentro de la RAN todavía aparece poco en la literatura.</li>
+        <li>Un modelo de cuatro variables bastó para bajar las fallas de plazo de 19,8 % a 7,8 %.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-top:6px">Cómo aprendimos</h3>
+      <p>Con más de 800 documentos no se podía leer todo. Primero hicimos el mapa y después leímos solo los más citados de cada clúster. El primer mapa salió con sinónimos repetidos y términos vacíos como «problem» en el centro; tuvimos que rehacerlo. En el experimento aprendimos que un resultado hay que probarlo con datos distintos a los de entrenamiento antes de creerle.</p>
+      <p><b>Para la próxima:</b> armar el tesauro desde el principio y usar una búsqueda que combine "edge AI" con términos de la RAN.</p>
+    </div>
+  </div>
+  <h3>¿Cuánto recuerdas?</h3>
+  <div class="quiz" id="quiz"></div>
+  <p id="quizRes" style="font-weight:600"></p>
+</article>
+
+<!-- 8 -->
+<article class="entrada" id="e8" data-tags="Multimedia,Videos,Equipo">
+  <h2>Videos recomendados y equipo</h2>
+  <p class="lead">Dos videos para complementar lo que contamos en el blog: uno en español para entender la idea general y otro sobre la IA dentro de la red de acceso radio.</p>
+  <h3>¿Qué es Edge AI?</h3>
+  <div class="video"><iframe src="https://www.youtube.com/embed/dnLWyi1KwQc" title="¿Qué es el Edge AI? La Inteligencia Artificial de Bolsillo" loading="lazy" allowfullscreen></iframe></div>
+  <p style="font-size:14px;color:var(--faint);margin-top:-4px">Fuente: Dot CSV (YouTube, 2021). Explica qué significa ejecutar modelos de IA en el propio dispositivo, sin depender de la nube. <a href="https://www.youtube.com/watch?v=dnLWyi1KwQc" target="_blank" rel="noopener">Ver en YouTube</a></p>
+  <h3>La IA llega a la RAN</h3>
+  <div class="video"><iframe src="https://www.youtube.com/embed/C52lnzKPOdM" title="AI-RAN Alliance Explainer Video" loading="lazy" allowfullscreen></iframe></div>
+  <p style="font-size:14px;color:var(--faint);margin-top:-4px">Fuente: AI-RAN Alliance (YouTube, 2026, en inglés; se pueden activar subtítulos en español). Muestra cómo la industria está integrando IA en la red de acceso radio, que es justo el vacío que encontramos en las tendencias. <a href="https://www.youtube.com/watch?v=C52lnzKPOdM" target="_blank" rel="noopener">Ver en YouTube</a></p>
+  <h3>Equipo</h3>
+  <div class="grid2">
+    <div class="box persona"><div class="ini">JP</div><div><b>Juan Pablo Moreno Peña</b><br><small style="color:var(--faint)">2215592</small><br><span style="font-size:14px">Búsqueda en Scopus y desarrollo del blog.</span></div></div>
+    <div class="box persona"><div class="ini">JD</div><div><b>Juan David Ruiz Higuera</b><br><small style="color:var(--faint)">2211241</small><br><span style="font-size:14px">Depuración en VOSviewer y experimento en Python.</span></div></div>
+  </div>
+  <p style="font-size:14px;color:var(--faint)">El análisis de los clústeres y las palabras lo hicimos entre los dos.</p>
+</article>
+
+<!-- 9 -->
+<article class="entrada" id="e9" data-tags="Fuentes,IEEE">
+  <h2>Fuentes</h2>
+  <p class="lead">Referencias en formato IEEE. Todas forman parte de los 813 documentos analizados, salvo el artículo de VOSviewer.</p>
+  <ol class="refs" id="refs"></ol>
+</article>
+
+<!-- 10 -->
+<article class="entrada" id="e10" data-tags="Comunidad,Interactivo">
+  <h2>Tu turno</h2>
+  <p class="lead">Este enlace se publica en el foro del aula virtual. Cuéntanos qué te pareció.</p>
+  <div class="grid2">
+    <div>
+      <h3 style="margin-top:4px">Deja un comentario</h3>
+      <div class="estrellas" id="estrellas"></div>
+      <p><input type="text" id="cNom" placeholder="Tu nombre (opcional)" /></p>
+      <p><textarea id="cTxt" rows="3" placeholder="¿Qué te llamó la atención? ¿Qué cambiarías?"></textarea></p>
+      <button class="btn" id="cEnv" type="button">Publicar</button>
+      <div id="coms"></div>
+    </div>
+    <div>
+      <h3 style="margin-top:4px">Encuesta</h3>
+      <div class="poll" id="poll"></div>
+      <h3>Comparte</h3>
+      <div class="share" id="shareMain"></div>
+    </div>
+  </div>
+  <h3>Retroalimentación del foro</h3>
+  <div class="tw"><table>
+    <tr><th>Fecha</th><th>Comentario recibido</th><th>Qué cambiamos</th></tr>
+    <tr><td>—</td><td>Aún no hay comentarios del foro.</td><td>Esta tabla se actualiza cuando lleguen.</td></tr>
+  </table></div>
+</article>
+
+</main>
+</div>
+
+<footer>Edge AI en la RAN · Grupo 6 · Reto ABET Comunicaciones II (27145) · Escuela E3T, Universidad Industrial de Santander · Bucaramanga, 2026-II</footer>
+
+<div id="pop"></div>
+<button id="botBtn" type="button">💬 Pregúntale al blog</button>
+<div id="bot"><header>Pregúntale al blog</header><div id="botLog"></div><div class="sug" id="botSug"></div>
+<form id="botForm"><input type="text" id="botIn" placeholder="Escribe tu pregunta…" autocomplete="off" /><button class="btn" type="submit">→</button></form></div>
+
+<script src="datos.js"></script>
+<script>
+"use strict";
+const D = window.DATOS;
+const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
+const NS = 'http://www.w3.org/2000/svg';
+const CC = {1:'var(--c1)',2:'var(--c2)',3:'var(--c3)',4:'var(--c4)',5:'var(--c5)'};
+const CN = {1:'Rojo',2:'Verde',3:'Azul',4:'Amarillo',5:'Morado'};
+const fmt = (x, d=1) => x.toFixed(d).replace('.', ',');
+const store = { get(k, def){ try { const v = localStorage.getItem(k); return v === null ? def : JSON.parse(v); } catch(e){ return def; } },
+                set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} } };
+const T = {}; D.terms.forEach(t => T[t[0]] = {id:t[0], l:t[1], x:t[2], y:t[3], c:t[4], o:t[5], s:t[6], yr:t[7], k:t[8]});
+const byLabel = {}; Object.values(T).forEach(t => byLabel[t.l] = t);
+function el(tag, attrs={}, parent){ const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+
+/* ---------- tema ---------- */
+const tema = store.get('tema', null) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+document.documentElement.dataset.theme = tema;
+$('#temaBtn').onclick = () => { const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = t; store.set('tema', t); };
+
+/* ---------- progreso, índice, menú ---------- */
+addEventListener('scroll', () => { const h = document.documentElement; $('#progress').style.width = (100 * h.scrollTop / (h.scrollHeight - h.clientHeight)) + '%'; }, {passive:true});
+const entradas = $$('.entrada');
+entradas.forEach((e, i) => {
+  const h2 = e.querySelector('h2');
+  const meta = document.createElement('div'); meta.className = 'emeta';
+  meta.innerHTML = `<span class="num">Entrada ${i + 1}</span>` + e.dataset.tags.split(',').map(t => `<span class="t">#${t}</span>`).join('') + `<button class="tts" type="button">🔊 Escuchar</button>`;
+  e.insertBefore(meta, h2);
+  const li = document.createElement('li'); li.innerHTML = `<a href="#${e.id}">${i + 1}. ${h2.textContent}</a>`; $('#toc').appendChild(li);
+});
+$('#menuBtn').onclick = () => $('#side').classList.toggle('open');
+$$('#toc a').forEach(a => a.addEventListener('click', () => $('#side').classList.remove('open')));
+const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) $$('#toc a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + x.target.id)); }), {rootMargin:'-40% 0px -55% 0px'});
+entradas.forEach(e => io.observe(e));
+
+/* ---------- etiquetas y búsqueda ---------- */
+const allTags = [...new Set(entradas.flatMap(e => e.dataset.tags.split(',')))].sort();
+let tagOn = null;
+$('#tags').innerHTML = allTags.map(t => `<button class="tag" type="button" data-t="${t}">#${t}</button>`).join('');
+function filtrar(){
+  const q = $('#buscar').value.trim().toLowerCase(); let n = 0;
+  entradas.forEach(e => { const ok = (!tagOn || e.dataset.tags.split(',').includes(tagOn)) && (!q || e.textContent.toLowerCase().includes(q));
+    e.classList.toggle('oculta', !ok); if (ok) n++; });
+  $('#filtroInfo').textContent = (q || tagOn) ? `${n} entrada(s) coinciden. ` : '';
+  if (q || tagOn) { const b = document.createElement('a'); b.href = '#'; b.textContent = 'Ver todas'; b.onclick = ev => { ev.preventDefault(); tagOn = null; $('#buscar').value = ''; $$('.tag').forEach(x => x.classList.remove('on')); filtrar(); }; $('#filtroInfo').appendChild(b); }
+}
+$$('.tag').forEach(b => b.onclick = () => { tagOn = tagOn === b.dataset.t ? null : b.dataset.t; $$('.tag').forEach(x => x.classList.toggle('on', x.dataset.t === tagOn)); filtrar(); });
+$('#buscar').addEventListener('input', filtrar);
+
+/* ---------- texto a voz ---------- */
+$$('.tts').forEach(b => {
+  if (!('speechSynthesis' in window)) { b.remove(); return; }
+  b.onclick = () => {
+    const on = b.classList.contains('on'); speechSynthesis.cancel();
+    $$('.tts.on').forEach(x => { x.classList.remove('on'); x.textContent = '🔊 Escuchar'; });
+    if (on) return;
+    const art = b.closest('.entrada');
+    const txt = Array.from(art.querySelectorAll('h2, .lead, p, li, .hip, .box h4')).map(x => x.textContent.trim()).filter(Boolean).join('. ');
+    const u = new SpeechSynthesisUtterance(txt); u.lang = 'es-ES';
+    u.onend = () => { b.classList.remove('on'); b.textContent = '🔊 Escuchar'; };
+    b.classList.add('on'); b.textContent = '⏹ Detener'; speechSynthesis.speak(u);
+  };
+});
+
+/* ---------- glosario emergente ---------- */
+const GLOS = {
+  edge:['Edge AI','Inteligencia artificial que se ejecuta en el dispositivo o en un servidor cercano a él, y no en un centro de datos lejano.'],
+  ran:['RAN','Red de acceso radio: las estaciones base y antenas que conectan los celulares con el resto de la red.'],
+  urllc:['URLLC','Comunicaciones ultra confiables y de baja latencia. Tráfico que necesita respuesta en milisegundos y casi sin fallas.'],
+  embb:['eMBB','Banda ancha móvil mejorada: tráfico que necesita mucha velocidad, como video, pero tolera algo más de retardo.'],
+  sched:['Scheduling','Decidir en qué orden y en qué recurso se ejecuta cada tarea.'],
+  tes:['Tesauro','Archivo que le dice a VOSviewer qué palabras son la misma cosa, por ejemplo «drone» y «uav».'],
+  logreg:['Regresión logística','Modelo sencillo que convierte unas pocas variables en una probabilidad, aquí la de no cumplir el plazo.'],
+  mec:['MEC','Multi-access Edge Computing: servidores de cómputo ubicados en el borde de la red móvil.']
+};
+const pop = $('#pop');
+function showPop(d){ const g = GLOS[d.dataset.g]; if (!g) return; pop.innerHTML = `<b>${g[0]}</b>${g[1]}`; pop.style.display = 'block';
+  const r = d.getBoundingClientRect(); pop.style.left = Math.min(scrollX + r.left, scrollX + innerWidth - 300) + 'px'; pop.style.top = (scrollY + r.bottom + 6) + 'px'; }
+$$('dfn').forEach(d => { d.tabIndex = 0; d.addEventListener('mouseenter', () => showPop(d)); d.addEventListener('focus', () => showPop(d)); d.addEventListener('click', e => { e.stopPropagation(); showPop(d); }); d.addEventListener('mouseleave', () => pop.style.display = 'none'); });
+document.addEventListener('click', () => pop.style.display = 'none');
+
+/* ---------- nube vs borde ---------- */
+function latencia(){
+  const d = +$('#dNube').value, c = +$('#tComp').value, f = +$('#fBorde').value;
+  $('#dNubeV').textContent = d.toLocaleString('es-CO') + ' km'; $('#tCompV').textContent = c + ' ms'; $('#fBordeV').textContent = '×' + fmt(f, 1);
+  const nube = 2 * d / 200 + 2 * 4 * 0.5 + c;          // propagación ida y vuelta + 4 saltos + cómputo
+  const borde = 2 * 10 / 200 + 2 * 1 * 0.5 + c * f;    // 10 km, 1 salto, cómputo más lento
+  const mx = Math.max(nube, borde, 12);
+  const fila = (n, v, col) => `<div class="barra"><span>${n}</span><div class="tr" style="position:relative"><div class="fi" style="width:${100 * v / mx}%;background:${col}"></div><div style="position:absolute;top:-3px;bottom:-3px;left:${100 * 10 / mx}%;border-left:2px dashed var(--warn)"></div></div><b>${fmt(v, 1)} ms</b></div>`;
+  $('#latOut').innerHTML = fila('Nube', nube, 'var(--faint)') + fila('Borde', borde, 'var(--teal)') +
+    `<p style="margin:8px 0 0;font-size:14.5px">${borde < nube ? `El borde responde <b>${fmt(nube / borde, 1)} veces más rápido</b>.` : 'Con un borde tan lento, la nube gana: por eso importa organizar bien el trabajo en el borde.'} ${borde <= 10 ? 'Cumple la meta de 10 ms.' : 'No cumple la meta de 10 ms.'}</p>`;
+}
+['#dNube', '#tComp', '#fBorde'].forEach(s => $(s).addEventListener('input', latencia)); latencia();
+
+/* ---------- mapa conceptual ---------- */
+(function(){
+  const s = $('#cmap');
+  const N = [
+    {x:430, y:190, w:200, t:['Edge AI en la RAN'], c:'var(--ink)', d:'IA en servidores cercanos a la estación base, para decidir en milisegundos sin depender de la nube.', go:'e1'},
+    {x:140, y:60, w:220, t:['6G e infraestructura'], c:'var(--c1)', d:'Requisitos de la red: seguridad, escalabilidad y conectividad. Clúster rojo, 43 términos.', go:'e4', cl:1},
+    {x:720, y:60, w:220, t:['Inferencia y scheduling'], c:'var(--c2)', d:'Qué se ejecuta en el borde y en qué orden. Clúster verde, 40 términos; aquí están task y scheduling.', go:'e4', cl:2},
+    {x:140, y:320, w:220, t:['Detección en tiempo real'], c:'var(--c3)', d:'Para qué se usa: detectar objetos, anomalías y ataques con respuesta rápida. Clúster azul, 27 términos.', go:'e4', cl:3},
+    {x:720, y:320, w:220, t:['Datos y aprendizaje federado'], c:'var(--c4)', d:'Cómo se entrenan los modelos sin juntar todos los datos en un solo lugar. Clúster amarillo, 21 términos.', go:'e4', cl:4},
+    {x:430, y:330, w:220, t:['Gestión de la RAN con RL'], c:'var(--c5)', d:'Un agente que aprende a repartir los recursos de radio entre URLLC y eMBB. Clúster morado, 18 términos.', go:'e4', cl:5},
+    {x:430, y:50, w:220, t:['Nuestro experimento'], c:'var(--teal)', d:'Una regresión logística ordena las tareas del servidor de borde y baja las fallas de plazo de 19,8 % a 7,8 %.', go:'e6'}];
+  const E = [[0,1,'exige'],[0,2,'ejecuta'],[0,3,'sirve para'],[0,4,'se entrena con'],[0,5,'se gestiona con'],[2,6,'se prueba en'],[5,2,'']];
+  E.forEach(([a, b, l]) => { el('line', {x1:N[a].x, y1:N[a].y, x2:N[b].x, y2:N[b].y, stroke:'var(--faint)', 'stroke-width':1.4}, s);
+    if (l) { const t = el('text', {x:(N[a].x + N[b].x) / 2, y:(N[a].y + N[b].y) / 2 - 6, 'text-anchor':'middle', 'font-size':12.5, fill:'var(--soft)'}, s); t.textContent = l; } });
+  N.forEach(n => { const g = el('g', {tabindex:0, style:'cursor:pointer'}, s);
+    el('rect', {x:n.x - n.w / 2, y:n.y - 21, width:n.w, height:42, rx:21, fill:n.c}, g);
+    const t = el('text', {x:n.x, y:n.y + 5, 'text-anchor':'middle', 'font-size':14.5, 'font-weight':600, fill:'var(--paper)'}, g); t.textContent = n.t[0];
+    const f = () => { $('#cmapInfo').innerHTML = `<b>${n.t[0]}.</b> ${n.d} <a href="#${n.go}">Ir a la entrada →</a>`; if (n.cl) cluSel(n.cl); };
+    g.addEventListener('click', f); g.addEventListener('keydown', e => { if (e.key === 'Enter') f(); }); });
+})();
+
+/* ---------- documentos por año ---------- */
+(function(){
+  const s = $('#anios'), ys = [2016,2017,2018,2019,2020,2021,2022,2023,2024,2025], mx = 365;
+  ys.forEach((y, i) => { const v = D.years[y] || 0, h = 160 * v / mx, x = 30 + i * 60;
+    el('rect', {x, y:185 - h, width:40, height:Math.max(h, 1), rx:4, fill:y === 2025 ? 'var(--teal)' : 'var(--faint)'}, s);
+    const a = el('text', {x:x + 20, y:180 - h, 'text-anchor':'middle', 'font-size':12, fill:'var(--ink)'}, s); a.textContent = v;
+    const b = el('text', {x:x + 20, y:205, 'text-anchor':'middle', 'font-size':12, fill:'var(--soft)'}, s); b.textContent = y; });
+})();
+$('#copiar').onclick = () => { const t = $('#cadena').firstChild.textContent.trim(); (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => $('#copiar').textContent = '¡Copiada!').catch(() => $('#copiar').textContent = 'Selecciónala'); };
+
+/* ---------- embudo, tesauro, eliminados ---------- */
+(function(){
+  const F = [[20066, 'términos extraídos de títulos y resúmenes'], [468, 'aparecen en 9 o más documentos (meta: cerca de 500)'], [281, 'el 60 % más relevante según VOSviewer'], [149, 'quedan tras la limpieza manual']];
+  $('#embudo').innerHTML = F.map(([v, t], i) => `<div class="fila"><div class="bl" style="width:${[100, 62, 46, 32][i]}%;opacity:${1 - i * 0.12}">${v.toLocaleString('es-CO')}</div><span class="tx">${t}</span></div>`).join('');
+  $('#tesauro').innerHTML = Object.entries(D.thes).map(([k, v]) => `<span class="chip" title="${v.join(', ')}"><b>${k}</b> ← ${v.join(', ')}</span>`).join('');
+  const C = {g:'Genéricos', m:'De redacción', f:'Fragmentos'};
+  const show = k => { $$('#critBtns .chip').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+    $('#elimList').innerHTML = D.elim.filter(e => e[2] === k).map(e => `<span class="chip">${e[0]} <small style="color:var(--faint)">${e[1]}</small></span>`).join(''); };
+  $('#critBtns').innerHTML = Object.entries(C).map(([k, v]) => `<button type="button" class="chip sel" data-k="${k}">${v} (${D.elim.filter(e => e[2] === k).length})</button>`).join('');
+  $$('#critBtns .chip').forEach(b => b.onclick = () => show(b.dataset.k)); show('g');
+})();
+
+/* ---------- red interactiva ---------- */
+const red = $('#red'); const nodos = {}; let filtroC = new Set([1,2,3,4,5]);
+(function(){
+  const xs = Object.values(T).map(t => t.x), ys = Object.values(T).map(t => t.y);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  Object.values(T).forEach(t => { t.px = 40 + 820 * (t.x - x0) / (x1 - x0); t.py = 30 + 540 * (t.y - y0) / (y1 - y0); });
+  const gE = el('g', {}, red), gN = el('g', {}, red), gL = el('g', {'pointer-events':'none'}, red); red._gE = gE;
+  const fuertes = []; for (const a in D.adj) D.adj[a].forEach(([b, w]) => { if (+a < b && w >= 12) fuertes.push([+a, b, w]); });
+  fuertes.forEach(([a, b, w]) => el('line', {x1:T[a].px, y1:T[a].py, x2:T[b].px, y2:T[b].py, stroke:'var(--line)', 'stroke-width':0.4 + w / 25, 'data-a':a, 'data-b':b}, gE));
+  Object.values(T).sort((a, b) => a.o - b.o).forEach(t => {
+    const c = el('circle', {cx:t.px, cy:t.py, r:3 + Math.sqrt(t.o) * 0.9, fill:CC[t.c], 'fill-opacity':0.85, stroke:'var(--card)', 'stroke-width':1, style:'cursor:pointer'}, gN);
+    c.addEventListener('click', () => verTermino(t.id)); nodos[t.id] = c;
+    if (t.o >= 60) { const l = el('text', {x:t.px, y:t.py - 4 - Math.sqrt(t.o) * 0.9, 'text-anchor':'middle', 'font-size':12, 'font-weight':600, fill:'var(--ink)'}, gL); l.textContent = t.l; }
+  });
+  $('#redFiltro').innerHTML = [1,2,3,4,5].map(c => `<button type="button" class="chip sel on" data-c="${c}"><span class="dot" style="background:${CC[c]}"></span>${D.clus[c].n}</button>`).join('');
+  $$('#redFiltro .chip').forEach(b => b.onclick = () => { const c = +b.dataset.c; filtroC.has(c) ? filtroC.delete(c) : filtroC.add(c); b.classList.toggle('on'); pintar(); });
+})();
+function top10(id){ return (D.adj[id] || []).slice().sort((a, b) => b[1] - a[1] || T[a[0]].l.localeCompare(T[b[0]].l)).slice(0, 10); }
+let sel = null;
+function pintar(){
+  const vec = sel ? new Set(top10(sel).map(x => x[0])) : null;
+  Object.values(T).forEach(t => { const n = nodos[t.id], vis = filtroC.has(t.c);
+    n.setAttribute('fill-opacity', !vis ? 0.07 : (sel ? (t.id === sel || vec.has(t.id) ? 1 : 0.15) : 0.85));
+    n.setAttribute('stroke', t.id === sel ? 'var(--ink)' : 'var(--card)'); n.setAttribute('stroke-width', t.id === sel ? 2.5 : 1); });
+  red.querySelectorAll('.sel-line').forEach(x => x.remove());
+  if (sel) top10(sel).forEach(([b, w]) => el('line', {class:'sel-line', x1:T[sel].px, y1:T[sel].py, x2:T[b].px, y2:T[b].py, stroke:'var(--ink)', 'stroke-opacity':0.55, 'stroke-width':0.6 + w / 12}, red._gE));
+}
+function verTermino(id){
+  sel = id; pintar(); const t = T[id], tp = top10(id), mx = tp[0] ? tp[0][1] : 1;
+  const w = D.words.find(x => x.id === id);
+  $('#redPanel').innerHTML = `<b style="font-size:16px"><span class="dot" style="background:${CC[t.c]}"></span>${t.l}</b>
+    <p style="margin:4px 0 8px;color:var(--soft);font-size:13px">${t.o} ocurrencias · fuerza total ${t.s} · año prom. ${fmt(t.yr)}</p>` +
+    tp.map(([b, s]) => `<div class="lk"><span>${T[b].l}</span><i style="width:${100 * s / mx}%;background:${CC[T[b].c]}"></i><b>${s}</b></div>`).join('') +
+    (w ? `<p style="margin:10px 0 0"><a href="#e4" onclick="cluSel(${w.c});verPalabra(${w.id})">Ver su análisis completo →</a></p>` : '');
+}
+$('#redBuscar').addEventListener('input', e => { const q = e.target.value.trim().toLowerCase(); if (q.length < 2) return;
+  const t = Object.values(T).find(t => t.l === q) || Object.values(T).find(t => t.l.startsWith(q)) || Object.values(T).find(t => t.l.includes(q)); if (t) verTermino(t.id); });
+$$('#vistaTabs button').forEach(b => b.onclick = () => {
+  $$('#vistaTabs button').forEach(x => x.classList.toggle('on', x === b)); const v = b.dataset.v;
+  $('#vistaInt').style.display = v === 'int' ? '' : 'none'; $('#vistaImg').style.display = v === 'int' ? 'none' : '';
+  const cap = {mapa:'Mapa completo en VOSviewer (Network Visualization): 149 términos, 5 clústeres, 5.062 enlaces.', overlay:'Vista Overlay: el color indica el año promedio de publicación; amarillo es lo más reciente.', density:'Vista de densidad: las zonas más brillantes concentran más ocurrencias.'};
+  if (v !== 'int') { $('#vistaImgSrc').src = `img/${v}.jpg`; $('#vistaImgSrc').alt = cap[v]; $('#vistaCap').textContent = cap[v]; }
+});
+
+/* ---------- clústeres y palabras ---------- */
+let cluAct = 2;
+function cluSel(c){
+  cluAct = c; $$('#cluTabs button').forEach(b => b.classList.toggle('on', +b.dataset.c === c));
+  const k = D.clus[c], n = Object.values(T).filter(t => t.c === c).length, ws = D.words.filter(w => w.c === c);
+  $('#cluBody').innerHTML = `<figure style="margin:8px 0"><img src="img/cluster${c}.jpg" alt="Clúster ${c}" loading="lazy" /><figcaption>Clúster ${c} (${CN[c].toLowerCase()}): ${n} términos.</figcaption></figure>` +
+    k.p.map(p => `<p>${p}</p>`).join('') +
+    `<p style="font-weight:600;margin-bottom:0">Las cuatro palabras analizadas (toca una):</p><div class="wcards">` +
+    ws.map(w => `<button type="button" class="wcard" data-id="${w.id}"><b>${w.l}</b><small>${T[w.id].o} ocurrencias · fuerza ${T[w.id].s}</small></button>`).join('') + '</div>';
+  $$('.wcard').forEach(b => b.onclick = () => verPalabra(+b.dataset.id));
+  verPalabra(ws[0].id, true);
+}
+function verPalabra(id, quiet){
+  const w = D.words.find(x => x.id === id); if (!w) return; const t = T[id], tp = top10(id), mx = tp[0][1];
+  $$('.wcard').forEach(b => b.classList.toggle('on', +b.dataset.id === id));
+  const ev = D.ev[w.l];
+  $('#ficha').innerHTML = `<h3 style="margin-top:12px">${w.l} <small style="font-family:Inter,sans-serif;font-size:14px;color:var(--faint);font-weight:400">clúster ${t.c} · ${t.o} ocurrencias · ${t.k} enlaces · fuerza total ${t.s} · año prom. ${fmt(t.yr)}</small></h3>
+    <p style="color:var(--soft);margin-top:0"><i>${w.d}</i></p>
+    <div class="fichagrid"><div><b style="font-size:14px">Sus diez enlaces más fuertes</b>` +
+    tp.map(([b, s], i) => `<div class="lk"><span>${i + 1}. ${T[b].l} <small style="color:var(--faint)">(${CN[T[b].c].toLowerCase()})</small></span><i style="width:${100 * s / mx}%;background:${CC[T[b].c]}"></i><b>${s}</b></div>`).join('') +
+    `<p style="font-size:13.5px;color:var(--soft);margin-top:10px">Documentos que lo mencionan: ${ev['2021'][0]} en 2021 (${fmt(ev['2021'][1])} %) → ${ev['2023'][0]} en 2023 (${fmt(ev['2023'][1])} %) → ${ev['2025'][0]} en 2025 (${fmt(ev['2025'][1])} %).</p></div>
+    <figure style="margin:0"><img src="${w.img}" alt="Red de ${w.l} en VOSviewer" loading="lazy" /><figcaption>Red de «${w.l}» en VOSviewer.</figcaption></figure></div>
+    <p>${w.a}</p><div class="nota"><b>En resumen:</b> ${w.k}</div>`;
+  if (!quiet) $('#ficha').scrollIntoView({behavior:'smooth', block:'start'});
+}
+$('#cluTabs').innerHTML = [1,2,3,4,5].map(c => `<button type="button" data-c="${c}"><span class="dot" style="background:${CC[c]}"></span>${c}. ${D.clus[c].n.split(',')[0].split(' y ')[0]}</button>`).join('');
+$$('#cluTabs button').forEach(b => b.onclick = () => cluSel(+b.dataset.c));
+cluSel(2);
+
+/* ---------- tendencias ---------- */
+(function(){
+  const s = $('#trend'), yrs = [2019,2020,2021,2022,2023,2024,2025];
+  const terms = ['scheduling','inference','6g','security','decision making','agent','deep reinforcement learning','responsiveness','ran'];
+  const pal = ['#0f6b63','#3a9d48','#d64541','#3a6fc2','#d1b12b','#9659b3','#b4542d','#5d6662','#111'];
+  let on = new Set(['scheduling','6g','agent','ran']);
+  $('#trendChips').innerHTML = terms.map((t, i) => `<button type="button" class="chip sel" data-t="${t}"><span class="dot" style="background:${pal[i]}"></span>${t}</button>`).join('');
+  function draw(){
+    s.innerHTML = ''; const X = y => 50 + (y - 2019) * 105, Y = v => 260 - v * 4.4;
+    for (let v = 0; v <= 50; v += 10) { el('line', {x1:50, x2:690, y1:Y(v), y2:Y(v), stroke:'var(--line)'}, s); const t = el('text', {x:42, y:Y(v) + 4, 'text-anchor':'end', 'font-size':11, fill:'var(--faint)'}, s); t.textContent = v + ' %'; }
+    yrs.forEach(y => { const t = el('text', {x:X(y), y:282, 'text-anchor':'middle', 'font-size':12, fill:'var(--soft)'}, s); t.textContent = y; });
+    terms.forEach((t, i) => { if (!on.has(t)) return; const pts = yrs.map(y => [X(y), Y(D.ev[t][y][1])]);
+      el('polyline', {points:pts.map(p => p.join(',')).join(' '), fill:'none', stroke:pal[i], 'stroke-width':2.5}, s);
+      pts.forEach(([x, y], k) => { const c = el('circle', {cx:x, cy:y, r:3.5, fill:pal[i]}, s); const ti = el('title', {}, c); ti.textContent = `${t} · ${yrs[k]}: ${fmt(D.ev[t][yrs[k]][1])} % (${D.ev[t][yrs[k]][0]} docs)`; });
+      const lt = el('text', {x:pts[6][0] - 4, y:pts[6][1] - 8, 'text-anchor':'end', 'font-size':12, 'font-weight':600, fill:pal[i]}, s); lt.textContent = t; });
+    $$('#trendChips .chip').forEach(b => b.classList.toggle('on', on.has(b.dataset.t)));
+  }
+  $$('#trendChips .chip').forEach(b => b.onclick = () => { const t = b.dataset.t; on.has(t) ? on.delete(t) : on.add(t); draw(); });
+  draw();
+  const ord = Object.values(T).sort((a, b) => b.yr - a.yr);
+  $('#emerg').innerHTML = ord.slice(0, 8).map(t => `<span class="chip">${t.l} <small>${fmt(t.yr)}</small></span>`).join('');
+  $('#consol').innerHTML = ord.slice(-8).reverse().map(t => `<span class="chip">${t.l} <small>${fmt(t.yr)}</small></span>`).join('');
+})();
+
+/* ---------- simulador del mini-caso ---------- */
+function rng(seed){ let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+let semilla = 1;
+function corrida(seed, lam, pu){
+  const R = rng(seed), C = 10, H = 120, tasks = []; let t = 0;
+  while (true) { t += -Math.log(1 - R()) / lam; if (t >= H) break; const u = R() < pu, dm = 0.5 + 4.5 * R(), sl = u ? 0.1 + 0.9 * R() : 1 + 4 * R(), sv = dm / C;
+    tasks.push({a:t, dm, sl, u:u ? 1 : 0, sv, dl:t + sl + sv}); }
+  let bu = 0; const fin = [];
+  tasks.forEach((k, i) => { k.nin = 0; for (let j = 0; j < i; j++) if (fin[j] > k.a) k.nin++; const st = Math.max(k.a, bu); fin[i] = st + k.sv; bu = fin[i]; });
+  const M = D.model;
+  tasks.forEach(k => { const x = [k.dm, k.sl, k.u, k.nin]; let z = M.b; x.forEach((v, i) => z += M.w[i] * (v - M.mu[i]) / M.sd[i]); k.p = 1 / (1 + Math.exp(-z)); });
+  const key = {fcfs:k => k.a, sjf:k => k.dm, modelo:k => -k.p};
+  const res = {};
+  for (const pol in key) { let i = 0, tt = 0, cola = [], miss = 0, mu = 0, nu = 0;
+    while (i < tasks.length || cola.length) { if (!cola.length) tt = Math.max(tt, tasks[i].a);
+      while (i < tasks.length && tasks[i].a <= tt + 1e-12) cola.push(tasks[i++]);
+      cola.sort((x, y) => key[pol](x) - key[pol](y)); const k = cola.shift(); tt = Math.max(tt, k.a) + k.sv;
+      if (tt > k.dl) { miss++; if (k.u) mu++; } if (k.u) nu++; }
+    res[pol] = {m:100 * miss / tasks.length, u:nu ? 100 * mu / nu : 0}; }
+  return {n:tasks.length, res};
+}
+function simular(){
+  const lam = +$('#sLam').value, pu = +$('#sUr').value / 100; $('#sLamV').textContent = fmt(lam); $('#sUrV').textContent = Math.round(pu * 100) + ' %';
+  const res = {fcfs:{m:0,u:0}, sjf:{m:0,u:0}, modelo:{m:0,u:0}}; let ntot = 0; const REP = 10;
+  for (let r = 0; r < REP; r++) { const o = corrida(semilla * 100 + r, lam, pu); ntot += o.n; for (const p in o.res) { res[p].m += o.res[p].m / REP; res[p].u += o.res[p].u / REP; } }
+  const tasks = {length: Math.round(ntot / REP)};
+  const mx = Math.max(...Object.values(res).map(r => Math.max(r.m, r.u)), 5), nm = {fcfs:'FCFS', sjf:'SJF', modelo:'Modelo liviano'};
+  $('#sOut').innerHTML = `<p style="margin:0 0 4px;font-size:14px;color:var(--soft)">Promedio de 10 escenarios de 120 s (~${tasks.length} tareas cada uno) · carga ρ ≈ ${fmt(lam * 2.75 / 10, 2)}</p>` +
+    Object.keys(res).map(p => `<div class="barra"><span>${nm[p]}</span><div class="tr"><div class="fi" style="width:${100 * res[p].m / mx}%"></div></div><b>${fmt(res[p].m)} %</b></div>
+      <div class="barra" style="margin-top:-4px"><span style="font-size:12.5px;color:var(--faint)">↳ solo URLLC</span><div class="tr" style="height:8px"><div class="fi" style="width:${100 * res[p].u / mx}%;background:var(--warn)"></div></div><small>${fmt(res[p].u)} %</small></div>`).join('') +
+    `<p style="font-size:13px;color:var(--faint);margin:6px 0 0">Barra verde: tareas fuera de plazo (todas). Barra naranja: solo URLLC. Con carga muy baja las tres políticas se parecen; la diferencia aparece cuando la fila crece.</p>`;
+}
+['#sLam', '#sUr'].forEach(s => $(s).addEventListener('input', simular));
+$('#sRun').onclick = () => { semilla++; simular(); }; simular();
+
+/* ---------- quiz ---------- */
+(function(){
+  const Q = [
+    ['¿Cuántos documentos de Scopus se analizaron?', ['149', '468', '813', '20.066'], 2, 'Fueron 813 documentos publicados entre 2016 y 2025.'],
+    ['¿Para qué sirvió el tesauro?', ['Para traducir los términos', 'Para unir sinónimos como uav y drone', 'Para quitar artículos repetidos', 'Para elegir el umbral'], 1, 'Une variantes del mismo concepto para que no se repartan la fuerza.'],
+    ['¿Qué par de términos tiene el enlace más fuerte de los 200 analizados?', ['6g – security', 'task – scheduling', 'dataset – detection', 'mec – delay'], 1, 'task y scheduling aparecen juntos en 54 documentos.'],
+    ['¿Qué clúster contiene los términos ran, urllc y base station?', ['Rojo', 'Verde', 'Azul', 'Morado'], 3, 'El morado: gestión de recursos de la RAN con aprendizaje por refuerzo.'],
+    ['En el experimento, ¿qué empeora al usar el modelo liviano?', ['La tasa de fallas', 'Las fallas URLLC', 'La latencia p99', 'El uso de CPU'], 2, 'Algunas tareas eMBB esperan mucho más, y la latencia p99 sube a 20 s.']];
+  let ok = 0, resp = 0;
+  $('#quiz').innerHTML = Q.map((q, i) => `<div class="q">${i + 1}. ${q[0]}</div>` + q[1].map((o, j) => `<label><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('') + `<p class="ex" id="ex${i}"></p>`).join('');
+  Q.forEach((q, i) => $$(`input[name=q${i}]`).forEach(r => r.onchange = () => {
+    $$(`input[name=q${i}]`).forEach(x => { x.disabled = true; x.parentElement.classList.toggle('ok', +x.value === q[2]); });
+    if (+r.value !== q[2]) r.parentElement.classList.add('no'); else ok++;
+    resp++; $(`#ex${i}`).textContent = q[3];
+    if (resp === Q.length) $('#quizRes').textContent = `Acertaste ${ok} de ${Q.length}.`; }));
+})();
+
+/* ---------- referencias ---------- */
+$('#refs').innerHTML = [
+  ['K. B. Letaief, Y. Shi, J. Lu, and J. Lu, “Edge artificial intelligence for 6G: Vision, enabling technologies, and applications,” <i>IEEE J. Sel. Areas Commun.</i>, vol. 40, no. 1, pp. 5–36, 2022', '10.1109/JSAC.2021.3126076'],
+  ['Y. Liu, M. Peng, G. Shou, Y. Chen, and S. Chen, “Toward edge intelligence: Multiaccess edge computing for 5G and Internet of Things,” <i>IEEE Internet Things J.</i>, vol. 7, no. 8, pp. 6722–6747, 2020', '10.1109/JIOT.2020.3004500'],
+  ['N. J. van Eck and L. Waltman, “Software survey: VOSviewer, a computer program for bibliometric mapping,” <i>Scientometrics</i>, vol. 84, no. 2, pp. 523–538, 2010', '10.1007/s11192-009-0146-3'],
+  ['E. Li, L. Zeng, Z. Zhou, and X. Chen, “Edge AI: On-demand accelerating deep neural network inference via edge computing,” <i>IEEE Trans. Wireless Commun.</i>, vol. 19, no. 1, pp. 447–457, 2020', '10.1109/TWC.2019.2946140'],
+  ['S. Mhatre, F. Adelantado, K. Ramantas, and C. Verikoukis, “Intelligent QoS-aware slice resource allocation with user association parameterization for beyond 5G O-RAN-based architecture using DRL,” <i>IEEE Trans. Veh. Technol.</i>, vol. 74, no. 2, pp. 3096–3109, 2025', '10.1109/TVT.2024.3483288'],
+  ['Z. Fu, J. Ren, D. Zhang, Y. Zhou, and Y. Zhang, “Kalmia: A heterogeneous QoS-aware scheduling framework for DNN tasks on edge servers,” in <i>Proc. IEEE INFOCOM</i>, 2022, pp. 780–789', '10.1109/INFOCOM48880.2022.9796661'],
+  ['D. C. Nguyen <i>et al.</i>, “6G Internet of Things: A comprehensive survey,” <i>IEEE Internet Things J.</i>, vol. 9, no. 1, pp. 359–383, 2022', '10.1109/JIOT.2021.3103320'],
+  ['G. Zhu, Y. Wang, and K. Huang, “Broadband analog aggregation for low-latency federated edge learning,” <i>IEEE Trans. Wireless Commun.</i>, vol. 19, no. 1, pp. 491–506, 2020', '10.1109/TWC.2019.2946245'],
+  ['Y. Mao, J. Liu, Y. Wu, and N. Kato, “Security and privacy on 6G network edge: A survey,” <i>IEEE Commun. Surveys Tuts.</i>, vol. 25, no. 2, pp. 1095–1127, 2023', '10.1109/COMST.2023.3244674'],
+  ['Y. Cang, M. Chen, and K. Huang, “Joint batching and scheduling for high-throughput multiuser edge AI with asynchronous task arrivals,” <i>IEEE Trans. Wireless Commun.</i>, vol. 23, no. 10, pp. 13782–13795, 2024', '10.1109/TWC.2024.3404811'],
+  ['T. Qiu, J. Chi, X. Zhou, Z. Ning, M. Atiquzzaman, and D. O. Wu, “Edge computing in industrial Internet of Things: Architecture, advances and challenges,” <i>IEEE Commun. Surveys Tuts.</i>, vol. 22, no. 4, pp. 2462–2488, 2020', '10.1109/COMST.2020.3009103']
+].map(([r, d]) => `<li>${r}, doi: <a href="https://doi.org/${d}" target="_blank" rel="noopener">${d}</a>.</li>`).join('');
+
+/* ---------- comentarios, encuesta, compartir ---------- */
+(function(){
+  let est = 0; $('#estrellas').innerHTML = [1,2,3,4,5].map(i => `<button type="button" data-i="${i}" aria-label="${i} estrellas">★</button>`).join('');
+  $$('#estrellas button').forEach(b => b.onclick = () => { est = +b.dataset.i; $$('#estrellas button').forEach(x => x.classList.toggle('on', +x.dataset.i <= est)); });
+  const pintarC = () => { const cs = store.get('coms', []); $('#coms').innerHTML = cs.length ? cs.slice().reverse().map(c => `<div class="coment"><b>${c.n}</b> ${'★'.repeat(c.e)}<br>${c.t}<br><small>${c.f}</small></div>`).join('') : '<p style="font-size:14px;color:var(--faint)">Todavía no hay comentarios en este navegador.</p>'; };
+  const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  $('#cEnv').onclick = () => { const t = $('#cTxt').value.trim(); if (!t) return;
+    const cs = store.get('coms', []); cs.push({n:esc($('#cNom').value.trim() || 'Anónimo'), t:esc(t), e:est, f:new Date().toLocaleDateString('es-CO')}); store.set('coms', cs); $('#cTxt').value = ''; pintarC(); };
+  pintarC();
+  const ops = ['El mapa interactivo', 'Las fichas de las 20 palabras', 'El simulador del experimento', 'Nube o borde', 'El quiz'];
+  const pintarP = () => { const v = store.get('votos', {}), mio = store.get('mio', null), tot = Object.values(v).reduce((a, b) => a + b, 0);
+    $('#poll').innerHTML = '<p style="margin:0 0 6px">¿Qué te sirvió más para entender el tema?</p>' + ops.map(o => { const pc = tot ? Math.round(100 * (v[o] || 0) / tot) : 0;
+      return `<label><input type="radio" name="poll" value="${o}" ${mio ? 'disabled' : ''} ${mio === o ? 'checked' : ''}> ${o}${mio ? ` · ${pc} %<i style="width:${pc}%"></i>` : ''}</label>`; }).join('');
+    $$('#poll input').forEach(r => r.onchange = () => { const v2 = store.get('votos', {}); v2[r.value] = (v2[r.value] || 0) + 1; store.set('votos', v2); store.set('mio', r.value); pintarP(); }); };
+  pintarP();
+  const u = encodeURIComponent(location.href), t = encodeURIComponent('La IA se acerca a la antena: qué se investiga sobre Edge AI en la RAN');
+  const html = `<a target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=${u}">LinkedIn</a><a target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url=${u}&text=${t}">X</a><a target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=${u}">Facebook</a><a target="_blank" rel="noopener" href="https://wa.me/?text=${t}%20${u}">WhatsApp</a><a target="_blank" rel="noopener" href="https://www.researchgate.net/">ResearchGate</a><button type="button" class="copyLink">Copiar enlace</button>`;
+  $('#shareSide').innerHTML = html; $('#shareMain').innerHTML = html;
+  $$('.copyLink').forEach(b => b.onclick = () => { (navigator.clipboard ? navigator.clipboard.writeText(location.href) : Promise.reject()).then(() => b.textContent = '¡Copiado!').catch(() => b.textContent = 'No se pudo copiar'); });
+})();
+
+/* ---------- chatbot ---------- */
+(function(){
+  const F = [
+    [['que es','qué es','edge ai','definicion','definición'], 'Edge AI es ejecutar modelos de inteligencia artificial cerca de donde se generan los datos: en el dispositivo o en un servidor junto a la estación base, en lugar de la nube. Lo explicamos en la entrada 1.'],
+    [['ran','acceso radio'], 'La RAN (red de acceso radio) son las estaciones base y antenas que conectan los celulares con la red. En nuestro mapa, «ran» está en el clúster morado.'],
+    [['cuantos','cuántos','documentos','scopus'], 'Analizamos 813 documentos de Scopus (421 artículos y 392 ponencias) publicados entre 2016 y 2025.'],
+    [['umbral','ocurrencias','500'], 'Usamos un mínimo de 9 ocurrencias: así 468 de 20.066 términos cumplían el umbral, el valor más cercano a 500.'],
+    [['tesauro','sinonimo','sinónimo'], 'El tesauro unió 28 variantes en 15 términos, por ejemplo mec, mobile edge computing y multi access edge computing.'],
+    [['cluster','clúster','lineas','líneas'], 'Son 5: 6G e infraestructura (rojo), inferencia y scheduling (verde), detección en tiempo real (azul), datos y aprendizaje federado (amarillo) y gestión de la RAN con RL (morado).'],
+    [['tendencia','nuevo','reciente','emergente','futuro'], 'Lo más reciente: LLM y agentes en el borde, decisiones en tiempo real, sostenibilidad y mantenimiento predictivo. Míralo en la entrada 5.'],
+    [['experimento','mini','simul','scheduling','modelo'], 'Comparamos FCFS, SJF y un modelo liviano para ordenar tareas en un servidor de borde. El modelo bajó las tareas fuera de plazo de 19,8 % a 7,8 % y las fallas URLLC de 48 a 14.'],
+    [['urllc','embb'], 'URLLC es tráfico que necesita respuesta en milisegundos y casi sin fallas; eMBB es tráfico de alta velocidad que tolera más retardo.'],
+    [['codigo','código','python','descargar','csv'], 'El código en Python y los resultados en CSV se descargan al final de la entrada 6.'],
+    [['video','youtube'], 'En la entrada 8 hay dos videos recomendados: uno de Dot CSV sobre qué es Edge AI y otro de la AI-RAN Alliance sobre IA en la red de acceso radio.'],
+    [['quien','quién','equipo','autores','grupo'], 'Lo hicimos Juan Pablo Moreno Peña y Juan David Ruiz Higuera (Grupo 6), para Comunicaciones II en la UIS.'],
+    [['referencia','fuente','bibliograf','ieee'], 'Las fuentes están en la entrada 9, en formato IEEE y con enlace al DOI.']];
+  const log = $('#botLog');
+  const say = (t, who) => { const m = document.createElement('div'); m.className = 'm ' + who; m.textContent = t; log.appendChild(m); log.scrollTop = log.scrollHeight; };
+  const norm = s => s.toLowerCase();
+  const answer = q => { const s = norm(q); const h = F.find(f => f[0].some(k => s.includes(k))); return h ? h[1] : 'No tengo esa respuesta. Prueba con: qué es Edge AI, clústeres, tendencias, experimento o fuentes.'; };
+  say('Hola. Pregúntame sobre el tema, el método o el experimento.', 'b');
+  $('#botSug').innerHTML = ['¿Qué es Edge AI?', '¿Cuántos documentos?', 'Tendencias', 'Experimento'].map(s => `<button type="button">${s}</button>`).join('');
+  $$('#botSug button').forEach(b => b.onclick = () => { say(b.textContent, 'u'); setTimeout(() => say(answer(b.textContent), 'b'), 250); });
+  $('#botBtn').onclick = () => $('#bot').classList.toggle('open');
+  $('#botForm').onsubmit = e => { e.preventDefault(); const q = $('#botIn').value.trim(); if (!q) return; say(q, 'u'); $('#botIn').value = ''; setTimeout(() => say(answer(q), 'b'), 250); };
+})();
+</script>
+</body>
+</html>
